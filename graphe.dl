@@ -1,0 +1,17 @@
+
+g(a,b).
+g(b,c).
+g(b,f).
+g(f,g).
+g(e,f).
+g(e,g).
+g(d,a).
+g(d,e).
+%g(c,d).
+
+c(X,Y) :- g(X,Y).
+c(X,Z) :- g(X,Y), c(Y,Z).
+
+impair(X,Y) :- g(X,Y), not(X=Y).
+
+impair(X,Y) :- g(X,A),g(A,B), impair(B,Y),not(X=B).

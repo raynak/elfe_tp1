@@ -1,0 +1,51 @@
+%% les employes
+
+%%%%%%%%% À COMPLÉTER pour jean, jacques, anne
+employe(fabienne, 30, femme, 2002, xerox, 1).
+employe(eric,     49, homme, 1984, bull,  5).
+employe(marc,     25, homme, 2000, xerox, 2).
+employe(julie,    24, femme, 2001, ibm,   1).
+employe(sonia,    35, femme, 1996, ibm,   3).
+employe(franck,   45, homme, 1999, ibm,   2).
+employe(odette,   40, femme, 1994, bull,  4).
+employe(jean,     23, homme, 2000, ibm,   1).
+employe(jacques,  32, homme, 1991, bull,  4).
+employe(anne,     45, femme, 1993, bull,  3).
+
+%% la grille de salaire d'ibm
+salaire(ibm, 1,  2000).
+salaire(ibm, 2,  3000).
+salaire(ibm, 3, 4500).
+salaire(ibm, 4, 5500).
+salaire(ibm, 5, 7500).
+
+%% la grille de salaire de bull
+salaire(bull, 1,  1600).
+salaire(bull, 2,  3000).
+salaire(bull, 3, 4500).
+salaire(bull, 4, 6000).
+salaire(bull, 5, 7500).
+
+%% la grille de salaire de xerox
+%%%%%%%%%% À COMPLETER pour xerox
+salaire(xerox, 1, 2500).
+salaire(xerox, 2, 4500).
+salaire(xerox, 3, 5500).
+salaire(xerox, 4, 6000).
+salaire(xerox, 5, 7000).
+
+jeune_employe(Nom, Entreprise) :- employe(Nom, Age, _, _, Entreprise, _), Age=<25. 
+
+cadre(Nom) :- employe(Nom, _, _, _, _, Echelon), Echelon>=3.
+
+paie(Nom, X):- salaire(Ent,Echelon,X), (employe(Nom,_,_,_,Ent,Echelon)).
+
+gagne_plus_que(Nom1, Nom2) :- paie(Nom1, X), paie(Nom2, Y), X>Y.
+
+nombre_employes(Ent, Nb) :- group_by(employe(Nom,A,B,C,Ent,D),[Ent],Nb=count).
+
+age35(Employe, Salaire) :- employe(Employe,Age,_,_,Entreprise,Echelon), salaire(Entreprise, Echelon, Salaire), Age=<35. 
+
+salaireMax(Paie) :-  max(age35(_,Salaire),Salaire,Paie).
+
+juniorRiche(Nom) :- age35(Nom,Paie),salaireMax(Paie).

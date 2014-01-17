@@ -1,0 +1,11 @@
+:-type(employe(nom:string, age:int, sexe:string, entree:int, entreprise:string, echelon:int)).
+:-type(salaire(entreprise:string, echelon:int, salaire:int)).
+
+employe('Jean', 23, 'Homme', 2000, 'IBM', 1).
+employe('Jacques', 32, 'Homme', 1991, 'BULL', 4).
+
+salaire('IBM', 1, 2000).
+salaire('IBM', 2, 3000).
+salaire('IBM', 3, 4500).
+salaire('IBM', 4, 5500).
+salaire('IBM', 5, 7500).

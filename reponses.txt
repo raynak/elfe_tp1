@@ -1,0 +1,342 @@
+Question 5 :
+DES-Datalog> femme(X)
+
+{
+  femme(jody),
+  femme(mia),
+  femme(yolande)
+}
+Info: 3 tuples computed.
+
+Question 6 
+DES-Datalog> aime(vincent, X), femme(X)
+
+Info: Processing:
+  answer(X) :-
+    aime(vincent,X),
+    femme(X).
+{
+  answer(mia)
+}
+Info: 1 tuple computed.
+
+
+Question 7
+DES-Datalog> aime(vincent,X), not(femme(X))
+
+Info: Processing:
+  answer(X) :-
+    aime(vincent,X),
+    not(femme(X)).
+{
+  answer(pierre)
+}
+Info: 1 tuple computed.
+
+/* commutativité */
+DES-Datalog> not(femme(X)), aime(vincent, X)
+
+Error: not(femme(X)) might not be correctly computed because of the unrestricted variable(s):
+  [X]
+
+/* commencé par un "not" est unsafe, en définissant le type homme, et en exprimant la requête ci-dessu, cela fonctionne */
+
+Question 8:
+DES-Datalog> jaloux(vincent, _)
+
+{
+  jaloux(vincent,marcellus)
+}
+Info: 1 tuple computed.
+
+Question 9 :
+/*déjà traité auparavant : en ajoutant not(X=Y) dans le prédicat jaloux
+
+Question 10 : 
+/*En redéfinissant le prédicat suivant
+jaloux(X) :- jaloux(X,_).
+on interroge la base pour savoir si une personne est jalouse
+
+DES-Datalog> jaloux(vincent)
+
+{
+  jaloux(vincent)
+}
+Info: 1 tuple computed.
+
+Question 11 : 
+voir fichier 'entreprise.dl'
+
+Question 12 :
+DES-Datalog> nom(E) :- employe(E,_,_,_,'BULL',_).
+
+Info: Processing:
+  nom(E) :-
+    employe(E,_,_,_,'BULL',_).
+{
+  nom('Jacques')
+}
+Info: 1 tuple computed.
+
+Question 13 :
+DES-Datalog> salaire(Y) :- salaire(_,E,Y), employe('Jacques',_,_,_,_,E).
+
+Info: Processing:
+  salaire(Y) :-
+    salaire(_,E,Y),
+    employe('Jacques',_,_,_,_,E).
+{
+  salaire(5500)
+}
+Info: 1 tuple computed.
+
+
+Question 14 :
+ok
+
+Question 15
+DES-Datalog> employe(N, A, S, E, ibm, I)
+
+{
+  employe(franck,45,homme,1999,ibm,2),
+  employe(jean,23,homme,2000,ibm,1),
+  employe(julie,24,femme,2001,ibm,1),
+  employe(sonia,35,femme,1996,ibm,3)
+}
+Info: 4 tuples computed.
+
+
+DES-Datalog> femmes(N, A) :- employe(N,A,femme,_,_,_) 
+
+Info: Processing:
+  femmes(N,A) :-
+    employe(N,A,femme,_,_,_).
+{
+  femmes(anne,45),
+  femmes(fabienne,30),
+  femmes(julie,24),
+  femmes(odette,40),
+  femmes(sonia,35)
+}
+Info: 5 tuples computed.
+
+
+DES-Datalog> salaire(ibm,_,_)
+
+{
+  salaire(ibm,1,2000),
+  salaire(ibm,2,3000),
+  salaire(ibm,3,4500),
+  salaire(ibm,4,5500),
+  salaire(ibm,5,7500)
+}
+Info: 5 tuples computed.
+
+
+Question 16 : 
+Info: Processing:
+  jeune_employe(Nom,Entreprise) :-
+    employe(Nom,Age,_,_,Entreprise,_),
+    Age=<25.
+{
+  jeune_employe(jean,ibm),
+  jeune_employe(julie,ibm),
+  jeune_employe(marc,xerox)
+}
+Info: 3 tuples computed.          
+
+reponse 1) : les jeunse employes chez ibm sont jean et julie
+DES> jeune_employe(Nom,ibm)
+
+{
+  jeune_employe(jean,ibm),
+  jeune_employe(julie,ibm)
+}
+Info: 2 tuples computed.          
+
+reponse 2) : oui, marc est un jeune employe de chez xerox
+DES> jeune_employe(marc,xerox)
+
+{
+  jeune_employe(marc,xerox)
+}
+Info: 1 tuple computed.          
+
+reponse 3) : non, jacques n'est pas un jeune employe
+DES> jeune_employe(jacques,_)
+
+Info: Processing:
+  answer :-
+    jeune_employe(jacques,_).
+{
+}
+Info: 0 tuples computed.   
+
+
+
+Question 17 :
+cadre(Nom) :- employe(Nom, _, _, _, _, Echelon), Echelon>=3.
+
+DES> cadre(Nom)
+
+{
+  cadre(anne),
+  cadre(eric),
+  cadre(jacques),
+  cadre(odette),
+  cadre(sonia)
+}
+Info: 5 tuples computed.          
+
+
+Question 18 :
+
+DES> gagne_plus_que(marc, jean).
+
+{
+  gagne_plus_que(marc,jean)
+}
+Info: 1 tuple computed.          
+
+
+DES> gagne_plus_que(jean,marc)
+
+{
+}
+Info: 0 tuples computed.
+       
+marc gagne 4500 et jean 2000
+ce qui corresopnd bien au résultat fournit par le prédicat
+
+
+Question 19:
+nombre_employes(Ent, Nb) :- group_by(employe(Nom,A,B,C,Ent,D),[Ent],Nb=count).
+DES> nombre_employes(E, N)
+
+{
+  nombre_employes(bull,4),
+  nombre_employes(ibm,4),
+  nombre_employes(xerox,2)
+}
+Info: 3 tuples computed. 
+
+
+
+Question 20 :
+
+DES-Datalog> age35(X,Y)
+
+{
+  age35(fabienne,2500),
+  age35(jacques,6000),
+  age35(jean,2000),
+  age35(julie,2000),
+  age35(marc,4500),
+  age35(sonia,4500)
+}
+Info: 6 tuples computed.
+
+DES-Datalog> salaireMax(Y)
+
+{
+  salaireMax(6000)
+}
+Info: 1 tuple computed.
+
+DES-Datalog> juniorRiche(Y)
+
+{
+  juniorRiche(jacques)
+}
+Info: 1 tuple computed.
+
+
+
+Exercice 3 : Grapĥe
+
+Question 21:
+Voir fichier graphe.dl
+
+Question 22:
+DES-Datc(X,Y)
+
+{
+  c(a,b),
+  c(a,c),
+  c(a,f),
+  c(a,g),
+  c(b,c),
+  c(b,f),
+  c(b,g),
+  c(d,a),
+  c(d,b),
+  c(d,c),
+  c(d,e),
+  c(d,f),
+  c(d,g),
+  c(e,f),
+  c(e,g),
+  c(f,g)
+}
+
+Question 23 :
+ajout de la connection (c,d)
+On passe de 16 chemins à 31 chemins
+
+
+DES-Datalog> c(X,Y)
+
+{
+  c(a,a),
+  c(a,b),
+  c(a,c),
+  c(a,d),
+  c(a,e),
+  c(a,f),
+  c(a,g),
+  c(b,a),
+  c(b,b),
+  c(b,c),
+  c(b,d),
+  c(b,e),
+  c(b,f),
+  c(b,g),
+  c(c,a),
+  c(c,b),
+  c(c,c),
+  c(c,d),
+  c(c,e),
+  c(c,f),
+  c(c,g),
+  c(d,a),
+  c(d,b),
+  c(d,c),
+  c(d,d),
+  c(d,e),
+  c(d,f),
+  c(d,g),
+  c(e,f),
+  c(e,g),
+  c(f,g)
+}
+Info: 31 tuples computed.
+
+
+Question 24 :
+DES-Datalog> impair(X,Y)
+
+{
+  impair(a,b),
+  impair(a,g),
+  impair(b,c),
+  impair(b,f),
+  impair(d,a),
+  impair(d,c),
+  impair(d,e),
+  impair(d,f),
+  impair(d,g),
+  impair(e,f),
+  impair(e,g),
+  impair(f,g)
+}
+Info: 12 tuples computed.
